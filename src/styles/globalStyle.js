@@ -87,10 +87,10 @@ select {
     background-color: #FFFFFF;
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     word-wrap: break-word;
     font-family: 'Poppins', sans-serif;
-    #000000
 
   }
   

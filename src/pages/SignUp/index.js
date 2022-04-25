@@ -2,15 +2,36 @@ import styled from "styled-components";
 import Logo from "../../components/Logo";
 import Button from '@mui/material/Button';
 import { TextField, Divider } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { signUp } from "../../services/api";
+import { useNavigate } from "react-router";
+import UserContext from "../../contexts/userContext";
+import { verifyAndsetToken } from "../../services/tokenService";
 
 export default function SignUp(){
+  const { setToken } = useContext(UserContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState({
     original: "", 
     confirmPassword: ""
   });
-  console.log(email);
+
+  const navigate = useNavigate();
+
+  useEffect(verifyAndsetToken(setToken, navigate),[]);
+  
+  function submitForms(){
+    if(password.original === password.confirmPassword){
+      signUp({
+        email,
+        password: password.original
+      }).then((ans)=>{
+        navigate('/');
+      }).catch((err)=>{
+        console.log(err);
+      })
+    }
+  }
   
   return(
     <Container>
@@ -47,8 +68,13 @@ export default function SignUp(){
             confirmPassword: e.target.value
           })} />
 
-          <Button>Já possuo cadastro</Button>
-          <Button size="small" variant="contained">CADASTRAR</Button>
+          <Button onClick={()=> navigate('/')}>Já possuo cadastro</Button>
+          <Button 
+          size="small" 
+          variant="contained"
+          onClick={submitForms}>
+            CADASTRAR
+          </Button>
         </FormSignUp>
       </ContainerForms>
     </Container>

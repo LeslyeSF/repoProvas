@@ -1,16 +1,37 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/userContext";
 import styled from "styled-components";
 import Logo from "../../components/Logo";
 import Button from '@mui/material/Button';
 import { TextField, Divider } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { signIn } from "../../services/api";
+import { verifyAndsetToken } from "../../services/tokenService";
 
 export default function SignIn(){
-  const {user, setUser} = useContext(UserContext);
+  const { setToken } = useContext(UserContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  console.log(email);
+
+  const navigate = useNavigate();
+  
+  useEffect(verifyAndsetToken(setToken, navigate),[]);
+
+  function submitForms(){
+    signIn({
+      email,
+      password
+    })
+    .then((ans)=>{
+      localStorage.setItem("repoprovas_token",ans.data.token);
+      setToken(ans.data.token);
+      navigate('/home');
+    })
+    .catch ((err)=>{
+      console.log(err);
+    }) 
+  }
   
   return(
     <Container>
@@ -34,8 +55,13 @@ export default function SignIn(){
           value={password}
           onChange={e => setPassword(e.target.value)} />
           
-          <Button>Não possuo cadastro</Button>
-          <Button size="small" variant="contained">ENTRAR</Button>
+          <Button onClick={()=> navigate('/signup')}>Não possuo cadastro</Button>
+          <Button 
+          size="small" 
+          variant="contained" 
+          onClick={submitForms}>
+            ENTRAR
+          </Button>
         </FormSignIn>
       </ContainerForms>
     </Container>
