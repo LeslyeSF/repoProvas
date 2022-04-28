@@ -15,7 +15,10 @@ export default function Home(){
     disciplines:[],
     teachers:[]
   });
+  
   useEffect(()=>{
+    if (localStorage.getItem("repoprovas_token") === null) navigate('/');
+
     const auxData={
       disciplines:[],
       teachers:[]
@@ -34,7 +37,6 @@ export default function Home(){
 
     setData(auxData);
   },[]);
-  console.log(data);
   
   return(
     <>

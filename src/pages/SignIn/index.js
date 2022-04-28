@@ -2,12 +2,17 @@ import { useContext, useEffect } from "react";
 import UserContext from "../../contexts/userContext";
 import styled from "styled-components";
 import Logo from "../../components/Logo";
-import Button from '@mui/material/Button';
-import { TextField, Divider } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { signIn } from "../../services/api";
 import { verifyAndsetToken } from "../../services/tokenService";
+import {
+  Box,
+  Button,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 export default function SignIn(){
   const { setToken } = useContext(UserContext);
@@ -16,7 +21,12 @@ export default function SignIn(){
 
   const navigate = useNavigate();
   
-  useEffect(verifyAndsetToken(setToken, navigate),[]);
+  useEffect(() => {
+    if (localStorage.getItem("repoprovas_token") !== null){
+      setToken(localStorage.getItem("repoprovas_token"));
+      navigate('/home');
+    }
+  }, [navigate]);
 
   function submitForms(){
     signIn({
@@ -39,7 +49,19 @@ export default function SignIn(){
       <ContainerForms>
         <TitleContainer>Login</TitleContainer>
         <GitHubButton>ENTRAR COM O GITHUB</GitHubButton>
-        <Divider>ou</Divider>
+        <Box sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          marginTop: "16px",
+          marginBottom: "26px",
+        }}>
+          <Divider sx={{ flex: "1" }} />
+          <Typography variant="caption" component="span">
+            ou
+          </Typography>
+          <Divider sx={{ flex: "1" }} />
+        </Box>
         <FormSignIn>
           <TextField 
           id="outlined-basic" 
@@ -73,7 +95,7 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 185px;
+  gap: 100px;
 
   padding: 55px 0 55px 0;
 `;

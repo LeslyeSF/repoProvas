@@ -19,8 +19,8 @@ export function signIn(body) {
 }
 export function logOut(token) {
   const config = createConfig(token);
-
-  const promise = axios.post(`${BASE_URL}/logout`, config);
+  
+  const promise = axios.delete(`${BASE_URL}/logout`,config);
   return promise;
 }
 export function getTestsByTeachers(token) {

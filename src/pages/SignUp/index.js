@@ -18,7 +18,12 @@ export default function SignUp(){
 
   const navigate = useNavigate();
 
-  useEffect(verifyAndsetToken(setToken, navigate),[]);
+  useEffect(() => {
+    if (localStorage.getItem("repoprovas_token") !== null){
+      setToken(localStorage.getItem("repoprovas_token"));
+      navigate('/home');
+    }
+  }, [navigate]);
   
   function submitForms(){
     if(password.original === password.confirmPassword){

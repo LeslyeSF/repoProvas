@@ -1,5 +1,4 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 export default function ToggleButtons({toggle, setToggle}) {
@@ -7,27 +6,25 @@ export default function ToggleButtons({toggle, setToggle}) {
   return(
     <Container>
       <ToggleButtonGroup
-      color="secondary"
+      color="primary"
       defaultValue='DISCIPLINAS'
       value={toggle}
       exclusive={true}
-      onChange={console.log("teste")}
+      onChange={e=> setToggle(e.target.value)}
       sx={{
-        width: 700,
-        display: 'flex',
-        justifyContent: 'space-between',
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap",
       }}>
-        <ToggleButton 
-        value="DISCIPLINAS" 
-        onClick={e=>setToggle(e.target.value)}>
-          DISCIPLINAS
-        </ToggleButton>
-        <ToggleButton value="PESSOA INSTRUTORA" onClick={e=>setToggle(e.target.value)}>PESSOA INSTRUTORA</ToggleButton>
-        <ToggleButton value="ADICIONAR" onClick={e=>setToggle(e.target.value)}>ADICIONAR</ToggleButton>
+        <ToggleButton variant="contained" value="DISCIPLINAS">DISCIPLINAS</ToggleButton>
+        <ToggleButton variant="contained" value="PESSOA INSTRUTORA">PESSOA INSTRUTORA</ToggleButton>
+        <ToggleButton variant="contained" value="ADICIONAR" >ADICIONAR</ToggleButton>
       </ToggleButtonGroup>
     </Container>
   );
 }
 const Container = styled.div`
+  width: 100%;
   padding: 25px 0 25px 0;
 `;
