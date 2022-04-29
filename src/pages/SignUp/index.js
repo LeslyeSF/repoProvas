@@ -73,13 +73,15 @@ export default function SignUp(){
             confirmPassword: e.target.value
           })} />
 
-          <Button onClick={()=> navigate('/')}>Já possuo cadastro</Button>
-          <Button 
-          size="small" 
-          variant="contained"
-          onClick={submitForms}>
-            CADASTRAR
-          </Button>
+          <AreaButton>
+            <Button onClick={()=> navigate('/')}>Já possuo cadastro</Button>
+            <Button 
+            size="small" 
+            variant="contained"
+            onClick={submitForms}>
+              CADASTRAR
+            </Button>
+          </AreaButton>
         </FormSignUp>
       </ContainerForms>
     </Container>
@@ -91,7 +93,7 @@ const Container = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 185px;
+  gap: 100px;
 
   padding: 55px 0 55px 0;
 `;
@@ -136,4 +138,12 @@ const FormSignUp = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   gap: 10px;
+`;
+
+const AreaButton = styled.div`
+  width: 100%;
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

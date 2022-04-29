@@ -1,7 +1,7 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import styled from "styled-components";
 
-export default function ToggleButtons({toggle, setToggle}) {
+export default function OptionsButtons({toggle, setToggle}) {
   
   return(
     <Container>
@@ -17,9 +17,15 @@ export default function ToggleButtons({toggle, setToggle}) {
         alignItems: "center",
         flexWrap: "wrap",
       }}>
-        <ToggleButton variant="contained" value="DISCIPLINAS">DISCIPLINAS</ToggleButton>
-        <ToggleButton variant="contained" value="PESSOA INSTRUTORA">PESSOA INSTRUTORA</ToggleButton>
-        <ToggleButton variant="contained" value="ADICIONAR" >ADICIONAR</ToggleButton>
+        <ToggleButton sx={{
+          border: `0px solid #000000`
+        }}variant="contained" value="DISCIPLINAS">DISCIPLINAS</ToggleButton>
+        <ToggleButton sx={{
+          border: `0px solid #000000`
+        }} variant="contained" value="PESSOA INSTRUTORA">PESSOA INSTRUTORA</ToggleButton>
+        <ToggleButton sx={{
+          border: `0px solid #000000`
+        }} variant="contained" value="ADICIONAR" >ADICIONAR</ToggleButton>
       </ToggleButtonGroup>
     </Container>
   );

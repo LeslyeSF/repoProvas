@@ -35,3 +35,9 @@ export function getTestsByDisciplines(token) {
   const promise = axios.get(`${BASE_URL}/tests/disciplines`, config);
   return promise;
 }
+export function insertTest(token, body) {
+  const config = createConfig(token);
+  
+  const promise = axios.post(`${BASE_URL}/tests/insert`,body, config);
+  return promise;
+}

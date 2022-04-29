@@ -5,7 +5,6 @@ import Logo from "../../components/Logo";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { signIn } from "../../services/api";
-import { verifyAndsetToken } from "../../services/tokenService";
 import {
   Box,
   Button,
@@ -77,13 +76,16 @@ export default function SignIn(){
           value={password}
           onChange={e => setPassword(e.target.value)} />
           
-          <Button onClick={()=> navigate('/signup')}>Não possuo cadastro</Button>
-          <Button 
-          size="small" 
-          variant="contained" 
-          onClick={submitForms}>
-            ENTRAR
-          </Button>
+          <AreaButton>
+            <Button onClick={()=> navigate('/signup')}>Não possuo cadastro</Button>
+            <Button 
+            size="small" 
+            variant="contained" 
+            sx={{width: 86}}
+            onClick={submitForms}>
+              ENTRAR
+            </Button>
+          </AreaButton>
         </FormSignIn>
       </ContainerForms>
     </Container>
@@ -140,4 +142,11 @@ const FormSignIn = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   gap: 10px;
+`;
+const AreaButton = styled.div`
+  width: 100%;
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

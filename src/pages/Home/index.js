@@ -1,14 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Header from "../../components/Header";
-import UserContext from "../../contexts/userContext";
 import styled from "styled-components";
-import ToggleButtons from "../../components/ToggleButtons";
-import ListTests from "../../components/ListTests";
-import { getTestsByDisciplines, getTestsByTeachers } from "../../services/api";
+import OptionsButtons from "../../components/OptionsButtons";
+import FormAddTest from "../../components/FormAddTest";
+import ListTestsByTeacher from "../../components/ListTestsByTeacher";
+import ListTestsByDisciplines from "../../components/ListTestsByDisciplines";
 
 export default function Home(){
-  const { token } = useContext(UserContext);
   const [toggle, setToggle] = useState('DISCIPLINAS');
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -18,32 +17,18 @@ export default function Home(){
   
   useEffect(()=>{
     if (localStorage.getItem("repoprovas_token") === null) navigate('/');
-
-    const auxData={
-      disciplines:[],
-      teachers:[]
-    };
-    getTestsByDisciplines(localStorage.getItem("repoprovas_token"))
-    .then((ans)=>{
-      auxData.disciplines=ans.data;
-    })
-    .catch((err)=> console.log(err));
-
-    getTestsByTeachers(localStorage.getItem("repoprovas_token"))
-    .then((ans)=>{
-      auxData.teachers=ans.data;
-    })
-    .catch((err)=> console.log(err));
-
-    setData(auxData);
   },[]);
   
   return(
     <>
       <Header/>
       <Container>
-        <ToggleButtons toggle={toggle} setToggle={setToggle}/>
-        <ListTests toggle={toggle} data={data}/>
+        <OptionsButtons toggle={toggle} setToggle={setToggle}/>
+        {(toggle === 'ADICIONAR')
+        ?<FormAddTest/>
+        :(toggle === 'PESSOA INSTRUTORA')
+        ?<ListTestsByTeacher/>
+        :<ListTestsByDisciplines/>}
       </Container>
     </>
   );
