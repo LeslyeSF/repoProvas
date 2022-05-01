@@ -26,7 +26,7 @@ const Container = styled.div`
 
   padding: 0 50px 0 50px;
 
-  background-color: #FFFFFF;
+  background-color: #FAFAFA;
 
   border-bottom: 1px solid #C4C4C4;
 

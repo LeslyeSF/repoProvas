@@ -41,3 +41,23 @@ export function insertTest(token, body) {
   const promise = axios.post(`${BASE_URL}/tests/insert`,body, config);
   return promise;
 }
+
+export function getCategories(token){
+  const config = createConfig(token);
+  
+  const promise = axios.get(`${BASE_URL}/categories`, config);
+  return promise;
+}
+
+export function getTeachersDisciplines(token){
+  const config = createConfig(token);
+  
+  const promise = axios.get(`${BASE_URL}/disciplines/teachers`, config);
+  return promise;
+}
+export function updateViews(token, testId) {
+  const config = createConfig(token);
+  
+  const promise = axios.put(`${BASE_URL}/tests/views/${testId}`,"",config);
+  return promise;
+}

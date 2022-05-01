@@ -10,13 +10,9 @@ import ListTestsByDisciplines from "../../components/ListTestsByDisciplines";
 export default function Home(){
   const [toggle, setToggle] = useState('DISCIPLINAS');
   const navigate = useNavigate();
-  const [data, setData] = useState({
-    disciplines:[],
-    teachers:[]
-  });
   
   useEffect(()=>{
-    if (localStorage.getItem("repoprovas_token") === null) navigate('/');
+    if (localStorage.getItem("repoprovas_token") === null) navigate('/');  
   },[]);
   
   return(

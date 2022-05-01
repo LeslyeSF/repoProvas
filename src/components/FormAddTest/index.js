@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { 
   TextField, 
@@ -7,20 +7,83 @@ import {
   MenuItem, 
   InputLabel, 
   FormControl } from "@mui/material";
+import Swal from 'sweetalert2';
+import { getCategories, getTeachersDisciplines, insertTest } from '../../services/api';
 
 export default function FormAddTest() {
   const [form, setForm] = useState({
     title:"",
     pdfUrl: "",
     categoryId: "",
-    disciplineId:"",
-    teacherId:""
+    discipline:"",
+    teacherDisciplineId:""
   });
+  const [categories, setCategories] = useState([]);
+  const [teacherDiscipline, setTeacherDiscipline] = useState([]);
+  console.log(form.teacherDisciplineId);
 
-  function handleSubmit() {
-    //e . funcao para submit
-   alert("foi") ;
+  useEffect(()=>{
+    getCategories(localStorage.getItem("repoprovas_token"))
+    .then((ans)=>{
+      setCategories(ans.data.categories);
+    })
+    .catch(()=>{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Erro ao carregar dados!'
+      });
+    });
+
+    getTeachersDisciplines(localStorage.getItem("repoprovas_token"))
+    .then((ans)=>{
+      console.log(ans.data);
+      setTeacherDiscipline(ans.data);
+    })
+    .catch(()=>{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Erro ao carregar dados!'
+      });
+    });
+  },[]);
+  
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const body =  {
+      name: form.title,
+      pdfUrl: form.pdfUrl,
+      categoryId: form.categoryId,
+      teacherDisciplineId: form.teacherDisciplineId
+    }
+    insertTest(localStorage.getItem("repoprovas_token"), body)
+    .then(()=>{
+      Swal.fire({
+        icon: 'Success',
+        title: 'Show...',
+        text: 'Teste cadastrado com sucesso!'
+      });
+      setForm({
+        title:"",
+        pdfUrl: "",
+        categoryId: "",
+        discipline:"",
+        teacherDisciplineId:""
+      });
+
+    })
+    .catch(()=>{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Erro ao carregar dados!'
+      });
+    });
+   
   }
+
   return(
     <Container>
       <form onSubmit={handleSubmit}>
@@ -54,9 +117,9 @@ export default function FormAddTest() {
             form.categoryId = e.target.value;
             setForm({...form})
           }}>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {(categories.length>0)
+            ?categories.map((data)=> <MenuItem value={data.id}>{data.name}</MenuItem>)
+            : ""}
           </Select>
         </FormControl>
         <FormControl fullWidth>
@@ -64,31 +127,37 @@ export default function FormAddTest() {
           <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={form.disciplineId}
+          value={form.discipline}
           label="Disciplina"
           onChange={(e)=> {
-            form.disciplineId = e.target.value;
+            form.discipline = e.target.value;
             setForm({...form})
           }}>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {(teacherDiscipline.length>0)
+            ?teacherDiscipline.map((data)=> <MenuItem value={data.discipline}>{data.discipline}</MenuItem>)
+            : ""}
           </Select>
         </FormControl>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Pessoa Instrutora</InputLabel>
           <Select
+          disabled = {(form.discipline === "")? true : false}
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={form.teacherId}
+          value={form.teacherDisciplineId}
           label="Pessoa Instrutora"
           onChange={(e)=> {
-            form.teacherId = e.target.value;
+            form.teacherDisciplineId = e.target.value;
             setForm({...form})
           }}>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {(form.discipline !== "")
+            ? teacherDiscipline.map((data) => {
+              if(data.discipline === form.discipline){
+                return data.teachers.map(
+                  (data)=> <MenuItem value={data.teachersDisciplinesId}>{data.teacher}</MenuItem>
+                );
+              }
+            }):""}
           </Select>
         </FormControl>
         <Button type='submit'

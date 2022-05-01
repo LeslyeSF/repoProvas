@@ -84,7 +84,7 @@ select {
     font-family: 'Raleway', sans-serif;
   }
   .root{
-    background-color: #FFFFFF;
+    background-color: #FAFAFA;
     width: 100%;
     display: flex;
     flex-direction: column;

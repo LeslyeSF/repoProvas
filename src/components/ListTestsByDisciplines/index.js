@@ -7,15 +7,48 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
 import { getTestsByDisciplines } from "../../services/api";
+import CategoriesList from '../CategoriesList';
 
 export default function ListTestsByDisciplines() {
-  const [data, setData] = useState([]);
+  const [list, setList] = useState([]);
   useEffect(()=>{
     getTestsByDisciplines(localStorage.getItem("repoprovas_token"))
     .then((ans)=>{
-      setData(ans.data);
+      const listAux = ans.data.map((data) => 
+        <Accordion>
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+          >
+            <Typography>{data.term} Período</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              {data.disciplines.map((subdata)=>
+                <Accordion>
+                  <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                  >
+                    <Typography>{subdata.discipline}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>
+                      <CategoriesList tests={subdata.tests} filterBy='discipline'/>
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+              )}
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      );
+      setList(listAux);
     })
     .catch((err)=> {
+      console.log(err);
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -26,36 +59,7 @@ export default function ListTestsByDisciplines() {
   },[]);
   return(
     <Container>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Accordion 1</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Accordion 1</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+      {list}
     </Container>
   );
 }

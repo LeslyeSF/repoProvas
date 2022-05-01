@@ -7,13 +7,30 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { getTestsByTeachers } from "../../services/api";
+import CategoriesList from '../CategoriesList';
 
 export default function ListTestsByTeacher() {
-  const [data, setData] = useState([]);
+  const [list, setlist] = useState([]);
   useEffect(()=>{
     getTestsByTeachers(localStorage.getItem("repoprovas_token"))
     .then((ans)=>{
-      setData(ans.data);
+      const listAux = ans.data.map((data) => 
+        <Accordion>
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+          >
+            <Typography>{data.teacher}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              <CategoriesList tests={data.tests}/>
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      );
+      setlist(listAux);
     })
     .catch(()=> {
       Swal.fire({
@@ -23,38 +40,10 @@ export default function ListTestsByTeacher() {
       });
     });
   },[]);
+
   return(
     <Container>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Accordion 1</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Accordion 1</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+      {list}
     </Container>
   );
 }
