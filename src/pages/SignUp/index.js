@@ -6,9 +6,15 @@ import { useContext, useEffect, useState } from "react";
 import { signUp } from "../../services/api";
 import { useNavigate } from "react-router";
 import UserContext from "../../contexts/userContext";
-import { verifyAndsetToken } from "../../services/tokenService";
+import IconButton from '@mui/material/IconButton';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 export default function SignUp(){
+  const [showPassword, setShowPassword] = useState(false);
   const { setToken } = useContext(UserContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState({
@@ -37,6 +43,13 @@ export default function SignUp(){
       })
     }
   }
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   
   return(
     <Container>
@@ -53,25 +66,52 @@ export default function SignUp(){
           variant="outlined" 
           onChange={e => setEmail(e.target.value)}/>
 
-          <TextField 
-          id="outlined-basic" 
-          label="Senha" 
-          variant="outlined"
-          value={password.original}
-          onChange={e => setPassword({
-            original: e.target.value,
-            confirmPassword: password.confirmPassword
-          })} />
-
-          <TextField 
-          id="outlined-basic" 
-          label="Senha" 
-          variant="outlined"
-          value={password.confirmPassword}
-          onChange={e => setPassword({
-            original: password.original,
-            confirmPassword: e.target.value
-          })} />
+          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <OutlinedInput
+            label="Senha"
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            value={password.original}
+            onChange={e => setPassword({
+              original: e.target.value,
+              confirmPassword: password.confirmPassword
+            })}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+          <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
+          <OutlinedInput
+            label="Senha"
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            value={password.confirmPassword}
+            onChange={e => setPassword({
+              original: password.original,
+              confirmPassword: e.target.value
+            })}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
 
           <AreaButton>
             <Button onClick={()=> navigate('/')}>Já possuo cadastro</Button>

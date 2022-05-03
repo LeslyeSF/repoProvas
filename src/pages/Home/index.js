@@ -17,7 +17,7 @@ export default function Home(){
   
   return(
     <>
-      <Header/>
+      <Header toggle={toggle}/>
       <Container>
         <OptionsButtons toggle={toggle} setToggle={setToggle}/>
         {(toggle === 'ADICIONAR')

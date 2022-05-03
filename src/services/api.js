@@ -61,3 +61,10 @@ export function updateViews(token, testId) {
   const promise = axios.put(`${BASE_URL}/tests/views/${testId}`,"",config);
   return promise;
 }
+
+export function getAllTests(token) {
+  const config = createConfig(token);
+  
+  const promise = axios.get(`${BASE_URL}/tests`,config);
+  return promise;
+}

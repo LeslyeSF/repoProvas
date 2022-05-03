@@ -20,6 +20,7 @@ export default function LogOut() {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
+        console.log(token);
         logOut(token)
         .then(()=>{
           localStorage.removeItem("repoprovas_token");

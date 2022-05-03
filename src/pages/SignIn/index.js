@@ -12,11 +12,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import IconButton from '@mui/material/IconButton';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 export default function SignIn(){
   const { setToken } = useContext(UserContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
   
@@ -41,6 +48,14 @@ export default function SignIn(){
       console.log(err);
     }) 
   }
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   
   return(
     <Container>
@@ -68,13 +83,26 @@ export default function SignIn(){
           value={email} 
           variant="outlined" 
           onChange={e => setEmail(e.target.value)}/>
-
-          <TextField 
-          id="outlined-basic" 
-          label="Senha" 
-          variant="outlined"
-          value={password}
-          onChange={e => setPassword(e.target.value)} />
+          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <OutlinedInput
+            label="Senha"
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
           
           <AreaButton>
             <Button onClick={()=> navigate('/signup')}>Não possuo cadastro</Button>
