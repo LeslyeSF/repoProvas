@@ -48,7 +48,6 @@ export default function ListTestsByDisciplines() {
       setList(listAux);
     })
     .catch((err)=> {
-      console.log(err);
       Swal.fire({
         icon: 'error',
         title: 'Oops...',

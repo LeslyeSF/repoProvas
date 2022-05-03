@@ -18,6 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Swal from "sweetalert2";
 
 export default function SignIn(){
   const { setToken } = useContext(UserContext);
@@ -45,7 +46,11 @@ export default function SignIn(){
       navigate('/home');
     })
     .catch ((err)=>{
-      console.log(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Erro ao carregar dados!'
+      });
     }) 
   }
 
